@@ -1,5 +1,4 @@
 import * as fs from 'fs'
-import { parse } from 'path'
 
 const parseInput = fileName =>
   fs
@@ -11,21 +10,19 @@ const parseInput = fileName =>
         const [lArr, rArr] = acc
         const [l, r] = cur.split('   ')
 
-        lArr.push(l)
-        rArr.push(r)
-
-        return [lArr, rArr]
+        return [
+          [...lArr, l],
+          [...rArr, r]
+        ]
       },
       [[], []]
     )
 
 const partA = fileName => {
   const [left, right] = parseInput(fileName)
-
-  left.sort()
   right.sort()
 
-  return left.reduce((acc, cur, i) => acc + Math.abs(cur - right[i]), 0)
+  return left.sort().reduce((acc, cur, i) => acc + Math.abs(cur - right[i]), 0)
 }
 
 // could be made more efficient by keeping track of duplicate values on left
