@@ -1,0 +1,127 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 1",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_01/day_01.mjs"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 2",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_02/day_02.mjs"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 3",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_03/day_03.mjs"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 4",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_04/day_04.mjs"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 5",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_05/day_05.mjs"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 6",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_06/day_06.mjs"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 7",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_07/day_07.mjs"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 8",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_08/day_08.mjs"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 9",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_09/day_09.mjs"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 10",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_10/day_10.mjs"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 11",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_11/day_11.mjs"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 12",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_12/day_12.mjs"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 13",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_13/day_13.mjs"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 14",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_14/day_14.mjs"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 15",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_15/day_15.mjs"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 16",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_16/day_16.mjs"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 17",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_17/day_17.mjs"
+    }
+  ]
+}
