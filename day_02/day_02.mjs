@@ -9,16 +9,9 @@ const parseInput = fileName =>
 
 const isAscending = arr => arr.every((num, i) => i === 0 || num >= arr[i - 1])
 const isDescending = arr => arr.every((num, i) => i === 0 || num <= arr[i - 1])
-
-const spacedAppropriately = arr =>
-  arr.every((num, i) => {
-    if (i === 0) return true
-
-    const diff = Math.abs(arr[i - 1] - num)
-    return diff >= 1 && diff <= 3
-  })
-
-const isSafe = arr => (isAscending(arr) || isDescending(arr)) && spacedAppropriately(arr)
+const isBetween = (num, min, max) => num >= min && num <= max
+const gradual = arr => arr.every((num, i) => i === 0 || isBetween(Math.abs(arr[i - 1] - num), 1, 3))
+const isSafe = arr => (isAscending(arr) || isDescending(arr)) && gradual(arr)
 
 const partA = fileName => parseInput(fileName).filter(isSafe).length
 
