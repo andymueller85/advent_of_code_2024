@@ -4,16 +4,13 @@ const parseInput = fileName =>
   fs
     .readFileSync(fileName, 'utf8')
     .split(/\r?\n/)
-    .filter(d => d)
+    .filter(Boolean)
     .reduce(
       (acc, cur) => {
-        const [lArr, rArr] = acc
         const [l, r] = cur.split('   ')
-
-        return [
-          [...lArr, l],
-          [...rArr, r]
-        ]
+        acc[0].push(l)
+        acc[1].push(r)
+        return acc
       },
       [[], []]
     )
@@ -25,11 +22,15 @@ const partA = fileName => {
   return left.sort().reduce((acc, cur, i) => acc + Math.abs(cur - right[i]), 0)
 }
 
-// could be made more efficient by keeping track of duplicate values on left
 const partB = fileName => {
   const [left, right] = parseInput(fileName)
 
-  return left.reduce((acc, cur) => acc + cur * right.filter(x => x === cur).length, 0)
+  const rightCounts = right.reduce((acc, cur) => {
+    acc.set(cur, (acc.get(cur) || 0) + 1)
+    return acc
+  }, new Map())
+
+  return left.reduce((acc, cur) => acc + cur * (rightCounts.get(cur) || 0), 0)
 }
 
 const process = (part, sampleFile, expectedAnswer, fn) => {
