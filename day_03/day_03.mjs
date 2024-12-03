@@ -18,13 +18,7 @@ const partA = fileName => processMulInstructions(parseInput(fileName))
 const partB = fileName =>
   parseInput(fileName)
     .split(DO_STRING)
-    .reduce((acc, section) => {
-      const rawInstructions = section.includes(DONT_STRING)
-        ? section.substring(0, section.indexOf(DONT_STRING))
-        : section
-
-      return acc + processMulInstructions(rawInstructions)
-    }, 0)
+    .reduce((acc, section) => acc + processMulInstructions(section.split(DONT_STRING)[0]), 0)
 
 const process = (part, sampleFile, expectedAnswer, fn) => {
   const sampleAnswer = fn(sampleFile)
@@ -37,5 +31,5 @@ const process = (part, sampleFile, expectedAnswer, fn) => {
   console.log(`part ${part} real answer`, fn('./day_03/input.txt'))
 }
 
-process('A', './day_03/sample_input.txt', 161, partA)
+process('A', './day_03/sample_input_a.txt', 161, partA)
 process('B', './day_03/sample_input_b.txt', 48, partB)
