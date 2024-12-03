@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 
-const parseInput = fileName => fs.readFileSync(fileName, 'utf8').split(/\r?\n/).filter(Boolean)
+const parseInput = fileName => fs.readFileSync(fileName, 'utf8')
 
 const DO_STRING = 'do()'
 const DONT_STRING = `don't()`
@@ -13,11 +13,10 @@ const processMulInstructions = rawInstructions =>
     return acc + a * b
   }, 0)
 
-const partA = fileName => processMulInstructions(parseInput(fileName).join(''))
+const partA = fileName => processMulInstructions(parseInput(fileName))
 
 const partB = fileName =>
   parseInput(fileName)
-    .join('')
     .split(DO_STRING)
     .reduce((acc, section) => {
       const rawInstructions = section.includes(DONT_STRING)
