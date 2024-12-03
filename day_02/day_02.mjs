@@ -7,11 +7,13 @@ const parseInput = fileName =>
     .filter(Boolean)
     .map(line => line.split(' ').map(Number))
 
-const isAscending = arr => arr.every((num, i) => i === 0 || num >= arr[i - 1])
-const isDescending = arr => arr.every((num, i) => i === 0 || num <= arr[i - 1])
+const isSorted = (arr, comparator) => arr.every((num, i) => i === 0 || comparator(arr[i - 1], num))
+const isAscending = arr => isSorted(arr, (a, b) => a <= b)
+const isDescending = arr => isSorted(arr, (a, b) => a >= b)
 const isBetween = (num, min, max) => num >= min && num <= max
-const gradual = arr => arr.every((num, i) => i === 0 || isBetween(Math.abs(arr[i - 1] - num), 1, 3))
-const isSafe = arr => (isAscending(arr) || isDescending(arr)) && gradual(arr)
+const isGradual = arr =>
+  arr.every((num, i) => i === 0 || isBetween(Math.abs(arr[i - 1] - num), 1, 3))
+const isSafe = arr => (isAscending(arr) || isDescending(arr)) && isGradual(arr)
 
 const partA = fileName => parseInput(fileName).filter(isSafe).length
 
