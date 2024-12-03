@@ -33,8 +33,8 @@ const partB = fileName => {
   return left.reduce((acc, cur) => acc + cur * (rightCounts.get(cur) || 0), 0)
 }
 
-const process = (part, sampleFile, expectedAnswer, fn) => {
-  const sampleAnswer = fn(sampleFile)
+const process = (part, expectedAnswer, fn) => {
+  const sampleAnswer = fn('./day_01/sample_input.txt')
 
   console.log(`part ${part} sample answer`, sampleAnswer)
   if (sampleAnswer !== expectedAnswer) {
@@ -44,5 +44,5 @@ const process = (part, sampleFile, expectedAnswer, fn) => {
   console.log(`part ${part} real answer`, fn('./day_01/input.txt'))
 }
 
-process('A', './day_01/sample_input.txt', 11, partA)
-process('B', './day_01/sample_input.txt', 31, partB)
+process('A', 11, partA)
+process('B', 31, partB)

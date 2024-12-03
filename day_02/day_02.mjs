@@ -24,8 +24,8 @@ const partB = fileName =>
       report.some((_, i) => isSafe([...report.slice(0, i), ...report.slice(i + 1)]))
   ).length
 
-const process = (part, sampleFile, expectedAnswer, fn) => {
-  const sampleAnswer = fn(sampleFile)
+const process = (part, expectedAnswer, fn) => {
+  const sampleAnswer = fn('./day_02/sample_input.txt')
 
   console.log(`part ${part} sample answer`, sampleAnswer)
   if (sampleAnswer !== expectedAnswer) {
@@ -35,5 +35,5 @@ const process = (part, sampleFile, expectedAnswer, fn) => {
   console.log(`part ${part} real answer`, fn('./day_02/input.txt'))
 }
 
-process('A', './day_02/sample_input.txt', 2, partA)
-process('B', './day_02/sample_input.txt', 4, partB)
+process('A', 2, partA)
+process('B', 4, partB)
