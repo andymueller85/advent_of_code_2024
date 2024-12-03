@@ -2,35 +2,29 @@ import * as fs from 'fs'
 
 const parseInput = fileName => fs.readFileSync(fileName, 'utf8').split(/\r?\n/).filter(Boolean)
 
-const mulRegex = /mul\(\d+,\d+\)/g
-const numRegex = /\d+/g
-const doString = 'do()'
-const dontString = `don't()`
+const DO_STRING = 'do()'
+const DONT_STRING = `don't()`
+const MUL_REGEX = /mul\(\d+,\d+\)/g
+const NUM_REGEX = /\d+/g
 
-const partA = fileName =>
-  [...parseInput(fileName).join('').matchAll(mulRegex)].reduce((acc, cur) => {
-    const [a, b] = cur[0].match(numRegex).map(Number)
+const processMulInstructions = rawInstructions =>
+  [...rawInstructions.matchAll(MUL_REGEX)].reduce((acc, cur) => {
+    const [a, b] = cur[0].match(NUM_REGEX).map(Number)
     return acc + a * b
   }, 0)
+
+const partA = fileName => processMulInstructions(parseInput(fileName).join(''))
 
 const partB = fileName =>
   parseInput(fileName)
     .join('')
-    .split(doString)
-    .reduce((total, section) => {
-      const rawInstructions = section.includes(dontString)
-        ? section.substring(0, section.indexOf(dontString))
+    .split(DO_STRING)
+    .reduce((acc, section) => {
+      const rawInstructions = section.includes(DONT_STRING)
+        ? section.substring(0, section.indexOf(DONT_STRING))
         : section
 
-      const matches = [...rawInstructions.matchAll(mulRegex)]
-
-      return (
-        total +
-        matches.reduce((acc, cur) => {
-          const [a, b] = cur[0].match(numRegex).map(Number)
-          return acc + a * b
-        }, 0)
-      )
+      return acc + processMulInstructions(rawInstructions)
     }, 0)
 
 const process = (part, sampleFile, expectedAnswer, fn) => {
