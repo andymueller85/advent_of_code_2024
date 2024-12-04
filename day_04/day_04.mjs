@@ -7,12 +7,12 @@ const parseInput = fileName =>
     .filter(Boolean)
     .map(line => line.split(''))
 
+const forwardRegex = new RegExp('XMAS', 'gi')
+const reverseRegex = new RegExp('SAMX', 'gi')
+
 const swapXY = grid => grid[0].map((_, i) => grid.map(row => row[i]))
 
-const findMatches = str => [
-  ...str.matchAll(new RegExp('XMAS', 'gi')),
-  ...str.matchAll(new RegExp('SAMX', 'gi'))
-]
+const matchCount = str => [...str.matchAll(forwardRegex), ...str.matchAll(reverseRegex)].length
 
 const getDiagonals = (grid, ascending = true) => {
   const result = []
@@ -39,7 +39,7 @@ const getDiagonals = (grid, ascending = true) => {
 
 const partA = fileName => {
   const grid = parseInput(fileName)
-  const reducer = (acc, row) => acc + findMatches(row.join('')).length
+  const reducer = (acc, row) => acc + matchCount(row.join(''))
 
   return (
     grid.reduce(reducer, 0) +
@@ -89,4 +89,4 @@ const process = (part, expectedAnswer, fn) => {
 }
 
 process('A', 18, partA)
-process('A', 9, partB)
+process('B', 9, partB)
