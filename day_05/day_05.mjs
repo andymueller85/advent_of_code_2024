@@ -24,14 +24,10 @@ const processPages = (fileName, adder) => {
 }
 
 const partA = fileName =>
-  processPages(fileName, (pages, sortedPages) =>
-    arraysAreEqual(pages, sortedPages) ? pages[Math.floor(pages.length / 2)] : 0
-  )
+  processPages(fileName, (a, b) => (arraysAreEqual(a, b) ? a[Math.floor(a.length / 2)] : 0))
 
 const partB = fileName =>
-  processPages(fileName, (pages, sortedPages) =>
-    arraysAreEqual(pages, sortedPages) ? 0 : sortedPages[Math.floor(sortedPages.length / 2)]
-  )
+  processPages(fileName, (a, b) => (arraysAreEqual(a, b) ? 0 : b[Math.floor(b.length / 2)]))
 
 const process = (part, expectedAnswer, fn) => {
   const sampleAnswer = fn('./day_05/sample_input.txt')
