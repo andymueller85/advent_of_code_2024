@@ -17,20 +17,20 @@ const processPages = (fileName, adder) => {
   const [rawOrderingRules, rawPagesToProduce] = parseInput(fileName)
   const comparator = comparatorFactory(parseSection(rawOrderingRules, '|'))
 
-  return parseSection(rawPagesToProduce, ',').reduce((acc, cur) => {
-    const sorted = [...cur].sort(comparator)
-    return acc + adder(cur, sorted)
+  return parseSection(rawPagesToProduce, ',').reduce((acc, curPages) => {
+    const curSortedPages = [...curPages].sort(comparator)
+    return acc + adder(curPages, curSortedPages)
   }, 0)
 }
 
 const partA = fileName =>
-  processPages(fileName, (cur, sorted) =>
-    arraysAreEqual(cur, sorted) ? cur[Math.floor(cur.length / 2)] : 0
+  processPages(fileName, (pages, sortedPages) =>
+    arraysAreEqual(pages, sortedPages) ? pages[Math.floor(pages.length / 2)] : 0
   )
 
 const partB = fileName =>
-  processPages(fileName, (cur, sorted) =>
-    arraysAreEqual(cur, sorted) ? 0 : sorted[Math.floor(sorted.length / 2)]
+  processPages(fileName, (pages, sortedPages) =>
+    arraysAreEqual(pages, sortedPages) ? 0 : sortedPages[Math.floor(sortedPages.length / 2)]
   )
 
 const process = (part, expectedAnswer, fn) => {
