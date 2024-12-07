@@ -10,15 +10,16 @@ const parseInput = fileName =>
       return [Number(rawTestValue), rawNumbers.split(' ').map(Number)]
     })
 
-const calculateResult = (baseN, numbers) =>
-  baseN.reduce((acc, bit, index) => {
+const calculate = (baseN, numbers) =>
+  baseN.reduce((acc, bit, i) => {
+    const nextNumber = numbers[i + 1]
     switch (bit) {
       case 0:
-        return acc + numbers[index + 1]
+        return acc + nextNumber
       case 1:
-        return acc * numbers[index + 1]
+        return acc * nextNumber
       case 2:
-        return parseInt(acc.toString().concat(numbers[index + 1]))
+        return Number(acc.toString().concat(nextNumber))
       default:
         return acc
     }
@@ -34,25 +35,27 @@ const toBaseNArray = (num, base, upperLimit) =>
 const doMaths = (fileName, base) =>
   parseInput(fileName).reduce((total, [testValue, numbers]) => {
     const upperLimit = base ** (numbers.length - 1)
-
-    const matchFound = Array.from({ length: upperLimit }).reduce((found, _, i) => {
-      if (found) return true
-      return calculateResult(toBaseNArray(i, base, upperLimit), numbers) === testValue
-    }, false)
+    const matchFound = Array.from({ length: upperLimit }).reduce(
+      (found, _, i) => found || calculate(toBaseNArray(i, base, upperLimit), numbers) === testValue,
+      false
+    )
 
     return total + (matchFound ? testValue : 0)
   }, 0)
 
-const process = (part, expectedAnswer, base) => {
-  const sampleAnswer = doMaths('./day_07/sample_input.txt', base)
+const partA = fileName => doMaths(fileName, 2)
+const partB = fileName => doMaths(fileName, 3)
+
+const process = (part, expectedAnswer, fn) => {
+  const sampleAnswer = fn('./day_07/sample_input.txt')
 
   console.log(`part ${part} sample answer`, sampleAnswer)
   if (sampleAnswer !== expectedAnswer) {
     throw new Error(`part ${part} sample answer should be ${expectedAnswer}`)
   }
 
-  console.log(`part ${part} real answer`, doMaths('./day_07/input.txt', base))
+  console.log(`part ${part} real answer`, fn('./day_07/input.txt'))
 }
 
-process('A', 3749, 2)
-process('B', 11387, 3)
+process('A', 3749, partA)
+process('B', 11387, partB)
