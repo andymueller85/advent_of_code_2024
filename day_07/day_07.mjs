@@ -35,9 +35,8 @@ const toBaseNArray = (num, base, upperLimit) =>
 const doMaths = (fileName, base) =>
   parseInput(fileName).reduce((total, [testValue, numbers]) => {
     const upperLimit = base ** (numbers.length - 1)
-    const matchFound = Array.from({ length: upperLimit }).reduce(
-      (found, _, i) => found || calculate(toBaseNArray(i, base, upperLimit), numbers) === testValue,
-      false
+    const matchFound = Array.from({ length: upperLimit }, (_, i) => i).some(
+      i => calculate(toBaseNArray(i, base, upperLimit), numbers) === testValue
     )
 
     return total + (matchFound ? testValue : 0)
