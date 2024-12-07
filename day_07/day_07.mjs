@@ -7,53 +7,23 @@ const parseInput = fileName =>
     .filter(Boolean)
     .map(line => line.split(': '))
 
-const partA = fileName => {
+const doMaths = (fileName, base) => {
   let total = 0
   parseInput(fileName).forEach(([rawTestValue, rawNumbers]) => {
     const testValue = Number(rawTestValue)
     const numbers = rawNumbers.split(' ').map(Number)
 
-    const upperLimit = 2 ** (numbers.length - 1)
+    const upperLimit = base ** (numbers.length - 1)
 
     let counted = false
     for (let i = 0; i < upperLimit && !counted; i++) {
-      const binaryI = i
-        .toString(2)
-        .padStart((upperLimit - 1).toString(2).length, '0')
+      const baseN = i
+        .toString(base)
+        .padStart((upperLimit - 1).toString(base).length, '0')
         .split('')
         .map(Number)
 
-      const result = binaryI.reduce((acc, bit, index) => {
-        return bit === 0 ? acc + numbers[index + 1] : acc * numbers[index + 1]
-      }, numbers[0])
-
-      if (result === testValue) {
-        total += testValue
-        counted = true
-      }
-    }
-  })
-
-  return total
-}
-
-const partB = fileName => {
-  let total = 0
-  parseInput(fileName).forEach(([rawTestValue, rawNumbers]) => {
-    const testValue = Number(rawTestValue)
-    const numbers = rawNumbers.split(' ').map(Number)
-
-    const upperLimit = 3 ** (numbers.length - 1)
-
-    let counted = false
-    for (let i = 0; i <= upperLimit && !counted; i++) {
-      const binaryI = i
-        .toString(3)
-        .padStart((upperLimit - 1).toString(3).length, '0')
-        .split('')
-        .map(Number)
-
-      const result = binaryI.reduce((acc, bit, index) => {
+      const result = baseN.reduce((acc, bit, index) => {
         switch (bit) {
           case 0:
             return acc + numbers[index + 1]
@@ -74,16 +44,16 @@ const partB = fileName => {
   return total
 }
 
-const process = (part, expectedAnswer, fn) => {
-  const sampleAnswer = fn('./day_07/sample_input.txt')
+const process = (part, expectedAnswer, base) => {
+  const sampleAnswer = doMaths('./day_07/sample_input.txt', base)
 
   console.log(`part ${part} sample answer`, sampleAnswer)
   if (sampleAnswer !== expectedAnswer) {
     throw new Error(`part ${part} sample answer should be ${expectedAnswer}`)
   }
 
-  console.log(`part ${part} real answer`, fn('./day_07/input.txt'))
+  console.log(`part ${part} real answer`, doMaths('./day_07/input.txt', base))
 }
 
-process('A', 3749, partA)
-process('B', 11387, partB)
+process('A', 3749, 2)
+process('B', 11387, 3)
