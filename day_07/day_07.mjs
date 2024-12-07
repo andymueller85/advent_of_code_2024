@@ -10,19 +10,11 @@ const parseInput = fileName =>
       return [Number(rawTestValue), rawNumbers.split(' ').map(Number)]
     })
 
-const calculate = (baseN, numbers) =>
-  baseN.reduce((acc, bit, i) => {
-    const nextNumber = numbers[i + 1]
-    switch (bit) {
-      case 0:
-        return acc + nextNumber
-      case 1:
-        return acc * nextNumber
-      case 2:
-        return Number(acc.toString().concat(nextNumber))
-      default:
-        return acc
-    }
+const calculate = (baseNArr, numbers) =>
+  baseNArr.reduce((acc, bit, i) => {
+    if (bit === 0) return acc + numbers[i + 1]
+    if (bit === 1) return acc * numbers[i + 1]
+    return Number(acc.toString().concat(numbers[i + 1]))
   }, numbers[0])
 
 const toBaseNArray = (num, base, upperLimit) =>
