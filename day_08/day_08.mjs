@@ -21,12 +21,11 @@ const getMatchingFrequencies = (grid, val) => {
 const isInBounds = (row, col, grid) =>
   row >= 0 && col >= 0 && row < grid.length && col < grid[row].length
 
-const placeAntinodes = (grid, coords, antinodes) => {
+const placeAntinodesPartA = (grid, coords, antinodes) => {
   coords.forEach(([r1, c1], i) => {
     ;[...coords.slice(0, i), ...coords.slice(i + 1)].forEach(([r2, c2]) => {
       const dr = r2 - r1
       const dc = c2 - c1
-
       const antinodeRow = r2 + dr
       const antinodeCol = c2 + dc
 
@@ -37,7 +36,30 @@ const placeAntinodes = (grid, coords, antinodes) => {
   })
 }
 
-const partA = fileName => {
+const followLine = (grid, rPos, cPos, dr, dc, antinodes) => {
+  while (isInBounds(rPos, cPos, grid)) {
+    antinodes.add(`${rPos},${cPos}`)
+    rPos += dr
+    cPos += dc
+  }
+}
+
+const placeAntinodesPartB = (grid, coords, antinodes) => {
+  coords.forEach(([r1, c1], i) => {
+    coords.slice(i + 1).forEach(([r2, c2]) => {
+      const dr = r2 - r1
+      const dc = c2 - c1
+
+      // Follow the line in one direction
+      followLine(grid, r1, c1, dr, dc, antinodes)
+
+      // Follow the line in the other direction
+      followLine(grid, r2, c2, -dr, -dc, antinodes)
+    })
+  })
+}
+
+const traverseGrid = (fileName, placeAntinodesFn) => {
   const grid = parseInput(fileName)
 
   const frequencies = new Set()
@@ -45,13 +67,11 @@ const partA = fileName => {
 
   grid.forEach(row =>
     row.forEach(val => {
-      // if the value is a frequency we haven't seen before
       if ((val !== '.') & !frequencies.has(val)) {
         frequencies.add(val)
 
-        // find coordinates of all matching frequencies
         const coords = getMatchingFrequencies(grid, val)
-        placeAntinodes(grid, coords, antinodes)
+        placeAntinodesFn(grid, coords, antinodes)
       }
     })
   )
@@ -60,14 +80,15 @@ const partA = fileName => {
 }
 
 const process = (part, expectedAnswer, fn) => {
-  const sampleAnswer = fn('./day_08/sample_input.txt')
+  const sampleAnswer = traverseGrid('./day_08/sample_input.txt', fn)
 
   console.log(`part ${part} sample answer`, sampleAnswer)
   if (sampleAnswer !== expectedAnswer) {
     throw new Error(`part ${part} sample answer should be ${expectedAnswer}`)
   }
 
-  console.log(`part ${part} real answer`, fn('./day_08/input.txt'))
+  console.log(`part ${part} real answer`, traverseGrid('./day_08/input.txt', fn))
 }
 
-process('A', 14, partA)
+process('A', 14, placeAntinodesPartA)
+process('B', 34, placeAntinodesPartB)
