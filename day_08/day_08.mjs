@@ -7,16 +7,13 @@ const parseInput = fileName =>
     .filter(Boolean)
     .map(line => line.split(''))
 
-const getMatchingFrequencies = (grid, val) => {
-  return grid.reduce((coords, row, rowI) => {
+const getMatchingFrequencies = (grid, val) =>
+  grid.reduce((coords, row, rowI) => {
     row.forEach((cell, colI) => {
-      if (cell === val) {
-        coords.push([rowI, colI])
-      }
+      if (cell === val) coords.push([rowI, colI])
     })
     return coords
   }, [])
-}
 
 const isInBounds = (row, col, grid) =>
   row >= 0 && col >= 0 && row < grid.length && col < grid[row].length
@@ -24,10 +21,8 @@ const isInBounds = (row, col, grid) =>
 const placeAntinodesPartA = (grid, coords, antinodes) => {
   coords.forEach(([r1, c1], i) => {
     ;[...coords.slice(0, i), ...coords.slice(i + 1)].forEach(([r2, c2]) => {
-      const dr = r2 - r1
-      const dc = c2 - c1
-      const antinodeRow = r2 + dr
-      const antinodeCol = c2 + dc
+      const antinodeRow = 2 * r2 - r1
+      const antinodeCol = 2 * c2 - c1
 
       if (isInBounds(antinodeRow, antinodeCol, grid)) {
         antinodes.add(`${antinodeRow},${antinodeCol}`)
@@ -36,36 +31,32 @@ const placeAntinodesPartA = (grid, coords, antinodes) => {
   })
 }
 
-const followLine = (grid, rPos, cPos, dr, dc, antinodes) => {
+const followLine = (grid, rPos, cPos, rDelta, cDelta, antinodes) => {
   while (isInBounds(rPos, cPos, grid)) {
     antinodes.add(`${rPos},${cPos}`)
-    rPos += dr
-    cPos += dc
+    rPos += rDelta
+    cPos += cDelta
   }
 }
 
 const placeAntinodesPartB = (grid, coords, antinodes) => {
   coords.forEach(([r1, c1], i) => {
     coords.slice(i + 1).forEach(([r2, c2]) => {
-      const dr = r2 - r1
-      const dc = c2 - c1
+      const rDelta = r2 - r1
+      const cDelta = c2 - c1
 
-      // Follow the line in one direction
-      followLine(grid, r1, c1, dr, dc, antinodes)
-
-      // Follow the line in the other direction
-      followLine(grid, r2, c2, -dr, -dc, antinodes)
+      // follow the line in both directions, placing antinodes
+      followLine(grid, r1, c1, rDelta, cDelta, antinodes)
+      followLine(grid, r2, c2, -rDelta, -cDelta, antinodes)
     })
   })
 }
 
 const traverseGrid = (fileName, placeAntinodesFn) => {
-  const grid = parseInput(fileName)
-
   const frequencies = new Set()
   const antinodes = new Set()
 
-  grid.forEach(row =>
+  parseInput(fileName).forEach((row, _, grid) =>
     row.forEach(val => {
       if ((val !== '.') & !frequencies.has(val)) {
         frequencies.add(val)
