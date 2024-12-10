@@ -18,31 +18,33 @@ const getGridNeighbors = (grid, r, c) => {
   return neighbors
 }
 
-const getTrailheads = grid => {
-  const trailheads = []
+const getTrailheads = grid =>
+  grid.reduce(
+    (trailheads, row, rowI) =>
+      trailheads.concat(
+        row.map((cell, colI) => (cell === 0 ? [rowI, colI] : undefined)).filter(Boolean)
+      ),
+    []
+  )
 
-  grid.forEach((row, rowI) => {
-    row.forEach((cell, colI) => {
-      if (cell === 0) {
-        trailheads.push([rowI, colI])
-      }
-    })
-  })
+const traverse = (grid, r, c) => {
+  let summits = new Set()
+  let count = 0
 
-  return trailheads
-}
+  const neighbors = getGridNeighbors(grid, r, c)
 
-const traverse = (grid, r, c, summits, countObj) => {
-  getGridNeighbors(grid, r, c).forEach(([nRow, nCol]) => {
+  neighbors.forEach(([nRow, nCol]) => {
     if (grid[r][c] === 8 && grid[nRow][nCol] === 9) {
       summits.add(`${nRow},${nCol}`)
-      countObj.count++
+      count++
     } else if (grid[nRow][nCol] === grid[r][c] + 1) {
-      traverse(grid, nRow, nCol, summits, countObj)
+      const { summits: childSummits, count: childCount } = traverse(grid, nRow, nCol)
+      summits = new Set([...summits, ...childSummits])
+      count += childCount
     }
   })
 
-  return summits
+  return { summits, count }
 }
 
 const mapTrails = fileName => {
@@ -52,11 +54,9 @@ const mapTrails = fileName => {
   const trailheads = getTrailheads(grid)
 
   trailheads.forEach(([r, c]) => {
-    const summits = new Set()
-    const countObj = { count: 0 }
-    const summitsCheck = traverse(grid, r, c, summits, countObj)
-    totalScore += summitsCheck.size
-    totalCount += countObj.count
+    const { summits, count } = traverse(grid, r, c)
+    totalScore += summits.size
+    totalCount += count
   })
 
   return { totalScore, totalCount }
@@ -66,10 +66,12 @@ const mapTrails = fileName => {
   const PART_A_EXPECTED = 36
   const PART_B_EXPECTED = 81
 
-  const { totalScore, totalCount } = mapTrails('./day_10/sample_input.txt')
+  const { totalScore: totalScoreSample, totalCount: totalCountSample } = mapTrails(
+    './day_10/sample_input.txt'
+  )
 
-  console.log(`part A sample answer`, totalScore)
-  if (totalScore !== PART_A_EXPECTED) {
+  console.log(`part A sample answer`, totalScoreSample)
+  if (totalScoreSample !== PART_A_EXPECTED) {
     throw new Error(`part A sample answer should be ${PART_A_EXPECTED}`)
   }
 
@@ -77,8 +79,8 @@ const mapTrails = fileName => {
 
   console.log(`part A real answer`, totalScoreReal)
 
-  console.log(`part B sample answer`, totalCount)
-  if (totalCount !== PART_B_EXPECTED) {
+  console.log(`part B sample answer`, totalCountSample)
+  if (totalCountSample !== PART_B_EXPECTED) {
     throw new Error(`part B sample answer should be ${PART_B_EXPECTED}`)
   }
 
