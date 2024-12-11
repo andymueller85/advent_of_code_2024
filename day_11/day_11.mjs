@@ -1,48 +1,41 @@
 import * as fs from 'fs'
 import { process } from '../utils.mjs'
 
-const parseInput = fileName => fs.readFileSync(fileName, 'utf8').trim().split(' ')
+const parseInput = fileName => fs.readFileSync(fileName, 'utf8').trim().split(' ').map(Number)
 
-const unpad = numString => Number(numString).toString()
-
-const blink = stones => {
-  let newStones = []
-  stones.forEach(stone => {
-    if (stone === '0') {
-      newStones.push('1')
-    } else if (stone.length % 2 === 0) {
-      newStones.push(unpad(stone.slice(0, stone.length / 2)))
-      newStones.push(unpad(stone.slice(stone.length / 2)))
+const blink = stones =>
+  stones.reduce((newStones, stone) => {
+    const stoneStr = stone.toString()
+    if (stone === 0) {
+      newStones.push(1)
+    } else if (stoneStr.length % 2 === 0) {
+      newStones.push(Number(stoneStr.slice(0, stoneStr.length / 2)))
+      newStones.push(Number(stoneStr.slice(stoneStr.length / 2)))
     } else {
-      newStones.push((Number(stone) * 2024).toString())
+      newStones.push(stone * 2024)
     }
-  })
-  return newStones
-}
+    return newStones
+  }, [])
 
-const blinkButBetter = stoneCounts => {
-  const newStoneCounts = new Map()
-
-  Array.from(stoneCounts.entries()).forEach(([stone, count]) => {
-    if (stone === '0') {
-      newStoneCounts.set('1', (newStoneCounts.get('1') || 0) + count)
-    } else if (stone.length % 2 === 0) {
-      const halfIndex = stone.length / 2
-      const firstHalf = unpad(stone.slice(0, halfIndex))
-      const secondHalf = unpad(stone.slice(halfIndex))
+const blinkButBetter = stoneCounts =>
+  Array.from(stoneCounts.entries()).reduce((newStoneCounts, [stone, count]) => {
+    const stoneStr = stone.toString()
+    if (stone === 0) {
+      newStoneCounts.set(1, (newStoneCounts.get(1) || 0) + count)
+    } else if (stoneStr.length % 2 === 0) {
+      const halfIndex = stoneStr.length / 2
+      const firstHalf = Number(stoneStr.slice(0, halfIndex))
+      const secondHalf = Number(stoneStr.slice(halfIndex))
 
       newStoneCounts.set(firstHalf, (newStoneCounts.get(firstHalf) || 0) + count)
       newStoneCounts.set(secondHalf, (newStoneCounts.get(secondHalf) || 0) + count)
     } else {
-      newStoneCounts.set(
-        (Number(stone) * 2024).toString(),
-        (newStoneCounts.get((Number(stone) * 2024).toString()) || 0) + count
-      )
-    }
-  })
+      const multipliedStone = stone * 2024
 
-  return newStoneCounts
-}
+      newStoneCounts.set(multipliedStone, (newStoneCounts.get(multipliedStone) || 0) + count)
+    }
+    return newStoneCounts
+  }, new Map())
 
 const partA = fileName => {
   let stones = parseInput(fileName)
@@ -51,7 +44,6 @@ const partA = fileName => {
 }
 
 const partB = fileName => {
-  // instead of an array, use a hash map to keep the count of unique stones
   let stones = parseInput(fileName)
   let stoneCounts = new Map()
 
