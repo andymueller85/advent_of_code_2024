@@ -1,4 +1,5 @@
 import * as fs from 'fs'
+import { process } from '../utils.mjs'
 
 const parseInput = fileName => fs.readFileSync(fileName, 'utf8').split(/\r?\n\r?\n/)
 
@@ -29,16 +30,5 @@ const partA = fileName =>
 const partB = fileName =>
   processPages(fileName, (a, b) => (arraysAreEqual(a, b) ? 0 : b[Math.floor(b.length / 2)]))
 
-const process = (part, expectedAnswer, fn) => {
-  const sampleAnswer = fn('./day_05/sample_input.txt')
-
-  console.log(`part ${part} sample answer`, sampleAnswer)
-  if (sampleAnswer !== expectedAnswer) {
-    throw new Error(`part ${part} sample answer should be ${expectedAnswer}`)
-  }
-
-  console.log(`part ${part} real answer`, fn('./day_05/input.txt'))
-}
-
-process('A', 143, partA)
-process('B', 123, partB)
+process(5, 'A', 143, partA)
+process(5, 'B', 123, partB)

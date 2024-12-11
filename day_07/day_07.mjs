@@ -1,4 +1,5 @@
 import * as fs from 'fs'
+import { process } from '../utils.mjs'
 
 const parseInput = fileName =>
   fs
@@ -37,16 +38,5 @@ const doMaths = (fileName, base) =>
 const partA = fileName => doMaths(fileName, 2)
 const partB = fileName => doMaths(fileName, 3)
 
-const process = (part, expectedAnswer, fn) => {
-  const sampleAnswer = fn('./day_07/sample_input.txt')
-
-  console.log(`part ${part} sample answer`, sampleAnswer)
-  if (sampleAnswer !== expectedAnswer) {
-    throw new Error(`part ${part} sample answer should be ${expectedAnswer}`)
-  }
-
-  console.log(`part ${part} real answer`, fn('./day_07/input.txt'))
-}
-
-process('A', 3749, partA)
-process('B', 11387, partB)
+process(7, 'A', 3749, partA)
+process(7, 'B', 11387, partB)

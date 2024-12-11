@@ -1,4 +1,5 @@
 import * as fs from 'fs'
+import { process } from '../utils.mjs'
 
 const parseInput = fileName =>
   fs
@@ -24,16 +25,5 @@ const partB = fileName =>
       report.some((_, i) => isSafe([...report.slice(0, i), ...report.slice(i + 1)]))
   ).length
 
-const process = (part, expectedAnswer, fn) => {
-  const sampleAnswer = fn('./day_02/sample_input.txt')
-
-  console.log(`part ${part} sample answer`, sampleAnswer)
-  if (sampleAnswer !== expectedAnswer) {
-    throw new Error(`part ${part} sample answer should be ${expectedAnswer}`)
-  }
-
-  console.log(`part ${part} real answer`, fn('./day_02/input.txt'))
-}
-
-process('A', 2, partA)
-process('B', 4, partB)
+process(2, 'A', 2, partA)
+process(2, 'B', 4, partB)

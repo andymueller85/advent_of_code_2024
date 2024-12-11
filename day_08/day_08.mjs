@@ -81,5 +81,5 @@ const process = (part, expectedAnswer, fn) => {
   console.log(`part ${part} real answer`, traverseGrid('./day_08/input.txt', fn))
 }
 
-process('A', 14, placeAntinodesPartA)
-process('B', 34, placeAntinodesPartB)
+process(8, 'A', 14, placeAntinodesPartA)
+process(8, 'B', 34, placeAntinodesPartB)

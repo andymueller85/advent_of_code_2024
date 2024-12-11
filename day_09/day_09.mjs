@@ -1,4 +1,5 @@
 import * as fs from 'fs'
+import { process } from '../utils.mjs'
 
 const parseInput = fileName => fs.readFileSync(fileName, 'utf8').trim().split('').map(Number)
 
@@ -108,16 +109,5 @@ const partB = fileName => {
   return diskMap.reduce((acc, val, i) => acc + (val !== '.' ? val * i : 0), 0)
 }
 
-const process = (part, expectedAnswer, fn) => {
-  const sampleAnswer = fn('./day_09/sample_input.txt')
-
-  console.log(`part ${part} sample answer`, sampleAnswer)
-  if (sampleAnswer !== expectedAnswer) {
-    throw new Error(`part ${part} sample answer should be ${expectedAnswer}`)
-  }
-
-  console.log(`part ${part} real answer`, fn('./day_09/input.txt'))
-}
-
-process('A', 1928, partA)
-process('B', 2858, partB)
+process(9, 'A', 1928, partA)
+process(9, 'B', 2858, partB)
