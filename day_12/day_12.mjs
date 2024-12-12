@@ -11,34 +11,29 @@ const parseInput = fileName =>
 const isInBounds = (grid, rowI, colI) =>
   rowI >= 0 && rowI < grid.length && colI >= 0 && colI < grid[0].length
 
-const getPerimeter = (plot, grid) =>
-  Array.from(plot).reduce((perimeter, cellCoords) => {
-    const [rowI, colI] = cellCoords.split(',').map(Number)
+const getNeighbors = (rowI, colI) => [
+  [rowI, colI - 1], // left
+  [rowI - 1, colI], // up
+  [rowI, colI + 1], // right
+  [rowI + 1, colI] // down
+]
 
-    return (
+const getPerimeter = (plot, grid) =>
+  Array.from(plot).reduce(
+    (perimeter, cellCoords) =>
       perimeter +
-      [
-        [rowI, colI - 1], // left
-        [rowI - 1, colI], // up
-        [rowI, colI + 1], // right
-        [rowI + 1, colI] // down
-      ].filter(
+      getNeighbors(...cellCoords.split(',').map(Number)).filter(
         ([candidateRowI, candidateColI]) =>
           !isInBounds(grid, candidateRowI, candidateColI) ||
           !plot.has(`${candidateRowI},${candidateColI}`)
-      ).length
-    )
-  }, 0)
+      ).length,
+    0
+  )
 
 const findAdjacentPlants = (grid, rowI, colI, curPlot, plottedCells) => {
   const cell = grid[rowI][colI]
 
-  ;[
-    [rowI, colI - 1], // left
-    [rowI - 1, colI], // up
-    [rowI, colI + 1], // right
-    [rowI + 1, colI] // down
-  ].forEach(([candidateRowI, candidateColI]) => {
+  getNeighbors(rowI, colI).forEach(([candidateRowI, candidateColI]) => {
     if (!isInBounds(grid, candidateRowI, candidateColI)) return
 
     const candidateNeighbor = grid[candidateRowI][candidateColI]
