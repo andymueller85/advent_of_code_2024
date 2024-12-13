@@ -47,4 +47,38 @@ const partA = fileName =>
       return acc + (lowestCost === Infinity ? 0 : lowestCost)
     }, 0)
 
+// the targets values are too high to brute force. It becomes a pair of linear equations like this
+// 94a + 22b = 10000000008400
+// 34a + 67b = 10000000005400
+const partB = fileName =>
+  getGroups(fileName)
+    .map(parseGroup)
+    .reduce((acc, { prize, buttonA, buttonB }) => {
+      const targetX = prize[0] + 10000000000000
+      const targetY = prize[1] + 10000000000000
+      const [ax, ay] = buttonA // 94, 34
+      const [bx, by] = buttonB // 22, 67
+      const aCost = 3
+      const bCost = 1
+
+      // ax * a + bx * b = targetX
+      // ay * a + by * b = targetY
+
+      const aDenom = ax * by - ay * bx
+      const aNumer = targetX * by - targetY * bx
+      const a = aNumer / aDenom
+
+      const bDenom = ay * bx - ax * by
+      const bNumer = targetX * ay - targetY * ax
+      const b = bNumer / bDenom
+
+      if (Number.isInteger(a) && Number.isInteger(b)) {
+        return acc + (a * aCost + b * bCost)
+      }
+      return acc
+    }, 0)
+
+// 156032253951283 is too high
+
 process(13, 'A', 480, partA)
+process(13, 'B', 875318608908, partB)
