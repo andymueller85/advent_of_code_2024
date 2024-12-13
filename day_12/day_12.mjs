@@ -111,11 +111,7 @@ const findAdjacentPlants = (grid, rowI, colI, curPlot, plottedCells) => {
     const candidateNeighbor = grid[candidateRowI][candidateColI]
     const candidateNeighborCoords = `${candidateRowI},${candidateColI}`
 
-    if (
-      !plottedCells.has(candidateNeighborCoords) &&
-      !curPlot.has(candidateNeighborCoords) &&
-      candidateNeighbor === cell
-    ) {
+    if (!curPlot.has(candidateNeighborCoords) && candidateNeighbor === cell) {
       plottedCells.add(candidateNeighborCoords)
       curPlot.add(candidateNeighborCoords)
       curPlot = findAdjacentPlants(grid, candidateRowI, candidateColI, curPlot, plottedCells)
@@ -125,8 +121,9 @@ const findAdjacentPlants = (grid, rowI, colI, curPlot, plottedCells) => {
   return curPlot
 }
 
-const createPlots = (grid, plotted) =>
-  grid.reduce((plots, row, rowI) => {
+const createPlots = grid => {
+  const plotted = new Set()
+  return grid.reduce((plots, row, rowI) => {
     row.forEach((_, colI) => {
       if (!plotted.has(`${rowI},${colI}`)) {
         // if a cell hasn't been visited, start a new plot and recursively find adjacent plants
@@ -135,6 +132,7 @@ const createPlots = (grid, plotted) =>
     })
     return plots
   }, [])
+}
 
 const partA = fileName => {
   const grid = parseInput(fileName)
@@ -147,8 +145,7 @@ const partA = fileName => {
 
 const partB = fileName => {
   const grid = parseInput(fileName)
-  const plotted = new Set()
-  const plots = createPlots(grid, plotted)
+  const plots = createPlots(grid)
 
   return plots.reduce(
     (totalPrice, plot) => totalPrice + plot.size * getStraightEdgesCount(plot, grid),
