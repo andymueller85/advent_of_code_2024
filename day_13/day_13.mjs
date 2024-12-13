@@ -78,7 +78,5 @@ const partB = fileName =>
       return acc
     }, 0)
 
-// 156032253951283 is too high
-
 process(13, 'A', 480, partA)
 process(13, 'B', 875318608908, partB)
